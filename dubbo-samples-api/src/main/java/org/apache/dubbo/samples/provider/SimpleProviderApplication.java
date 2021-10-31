@@ -24,22 +24,25 @@ import org.apache.dubbo.samples.api.GreetingsService;
 
 import java.util.concurrent.CountDownLatch;
 
-public class Application {
-    private static String zookeeperHost = System
-            .getProperty("zookeeper.address", "127.0.0.1");
-    private static String zookeeperPort = System.getProperty("zookeeper.port",
-            "2181");
+public class SimpleProviderApplication {
 
-    public static void main(String[] args) throws Exception {
-        ServiceConfig<GreetingsService> service = new ServiceConfig<>();
-        service.setApplication(new ApplicationConfig("first-dubbo-provider"));
-        service.setRegistry(new RegistryConfig(
-                "zookeeper://" + zookeeperHost + ":" + zookeeperPort));
-        service.setInterface(GreetingsService.class);
-        service.setRef(new GreetingsServiceImpl());
-        service.export();
+  private static String zookeeperHost = System
+      .getProperty("zookeeper.address", "127.0.0.1");
+  private static String zookeeperPort = System.getProperty("zookeeper.port",
+      "2181");
 
-        System.out.println("dubbo service started");
-        new CountDownLatch(1).await();
-    }
+  public static void main(String[] args) throws Exception {
+    ServiceConfig<GreetingsService> service = new ServiceConfig<>();
+    ApplicationConfig applicationConfig = new ApplicationConfig("simple-dubbo-provider");
+    applicationConfig.setQosEnable(false);
+    service.setApplication(applicationConfig);
+    service.setRegistry(new RegistryConfig(
+        "zookeeper://" + zookeeperHost + ":" + zookeeperPort));
+    service.setInterface(GreetingsService.class);
+    service.setRef(new GreetingsServiceImpl());
+    service.export();
+
+    System.out.println("dubbo service started");
+    new CountDownLatch(1).await();
+  }
 }

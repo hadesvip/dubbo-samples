@@ -103,7 +103,7 @@ from: app-external-zookeeper.yml
 
 props:
   project_name: dubbo-samples-api
-  main_class: org.apache.dubbo.samples.provider.Application
+  main_class: org.apache.dubbo.samples.provider.SimpleProviderApplication
   dubbo_port: 20880
   zookeeper_version: latest
 ```
